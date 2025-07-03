@@ -3,6 +3,7 @@
 Esse é meu primeiro projeto usando Git e GitHub! 🚀  
 Criei um arquivo `index.html` simples com uma mensagem de boas-vindas.
 E aqui ficarei usando para aprender e fixar todos os comandos do git e outras aprendizados.
+Também estarei colocando alguns projetos aqui dentro, um deles é o To-do list, usando html e Js.
 
 ## 🚀 Tecnologias usadas
 
