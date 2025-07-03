@@ -8,6 +8,7 @@ Também estarei colocando alguns projetos aqui dentro, um deles é o To-do list,
 ## 🚀 Tecnologias usadas
 
 - HTML5
+- JavaScript
 - Git & GitHub
 
 ## 📂 Como visualizar
