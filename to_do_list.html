@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>To-Do-List</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 400px;
+                margin: 30 auto;
+            }
+
+            h1 {
+                text-align: center;
+            }
+            input[type="text"] {
+                width: 70%;
+                padding: 8px;
+            }
+            button {
+                padding: 8px 12px;
+            }
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+            li {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px;
+                border-bottom: 1px solid #ccc;
+            }
+            li.completed {
+                text-decoration: line-through;
+                color: gray;
+            }
+            .btn-delete {
+                background-color: red;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Minha To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Adicione uma nova tarefa...">
+        <button id="addBtn">Adicionar Tarefa</button>
+        <ul id="taskList"></ul>
+
+        <script>
+            const taskInput = document.getElementById('taskInput');
+            const addBtn = document.getElementById('addBtn');
+            const taskList = document.getElementById('taskList');
+
+            function addTask(){
+                const taskText = taskInput.value.trim();
+                if (taskText === '') return alert('Digite uma tarefa.');
+
+                const li = document.createElement('li');
+                li.textContent = taskText;
+
+                // Riscando tarefa ao clicar
+                li.addEventListener('click', () => {
+                    li.classList.toggle('completed');
+                    saveTasks();
+                });
+
+                // Botão de deletar tarefa
+                const btnDelete = document.createElement('button');
+                btnDelete.textContent = 'X';
+                btnDelete.className = 'btn-delete';
+                btnDelete.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impede o evento de clique no li
+                    li.remove();
+                    saveTasks();
+                });
+
+                li.appendChild(btnDelete);
+                taskList.appendChild(li);
+                taskInput.value = ''; // Limpa o campo de entrada
+                saveTasks();  
+            }
+
+            // Função para salvar tarefas no localStorage
+
+           function saveTasks() {
+                const tasks = [];
+                taskList.querySelectorAll('li').forEach(li => {
+                    tasks.push({
+                        text: li.firstChild.textContent,
+                        completed: li.classList.contains('completed')
+                    });
+                });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+            
+
+            //carregar tarefas do localStorage
+            function loadTasks(){
+                const saved = localStorage.getItem('tasks');
+                if (!saved) return;
+                const tasks = JSON.parse(saved);
+                tasks.forEach(tasks => {
+                    const li = document.createElement('li');
+                    li.textContent = tasks.text;
+                    if (tasks.completed) {
+                        li.classList.add('completed');
+                    }
+
+                    // Riscando tarefa ao clicar
+                    li.addEventListener('click', () => {
+                        li.classList.toggle('completed');
+                        saveTasks();
+                    });
+
+                    // Botão de deletar tarefa
+                    const btnDelete = document.createElement('button');
+                    btnDelete.textContent = 'X';
+                    btnDelete.className = 'btn-delete';
+                    btnDelete.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Impede o evento de clique no li
+                        li.remove();
+                        saveTasks();
+                    });
+
+                    li.appendChild(btnDelete);
+                    taskList.appendChild(li);
+                });
+            }
+            addBtn.addEventListener('click', addTask);
+
+            //permitir adicionar tarefa com Enter
+            taskInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+
+            loadTasks(); // Carrega as tarefas ao iniciar
+        </script>
+    </body>
+</html>
